@@ -87,7 +87,7 @@ def display_todos(token, headers):
                 st.write(f"Completed: {'Yes' if todo['completed'] else 'No'}")
                 
                 if st.button("Mark as completed", key=f"complete_{todo['id']}"):
-                    requests.put(f"{BACKEND_URL}/todos/{todo['id']}", json={"completed": True}, headers=headers)
+                    requests.put(f"{BACKEND_URL}/todos/{todo['id']}", json={"title": todo['title'],  "description": todo['description'], "completed": True}, headers=headers)
                     st.experimental_rerun()
                 
                 if st.button("Delete", key=f"delete_{todo['id']}"):
