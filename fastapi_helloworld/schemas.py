@@ -21,7 +21,7 @@ class ToDo(ToDoBase):
     owner_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class UserBase(BaseModel):
     username: str
@@ -34,4 +34,4 @@ class User(UserBase):
     todos: List[ToDo] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
