@@ -1,7 +1,8 @@
 import streamlit as st
 import requests
 
-BACKEND_URL = "https://400c-119-155-209-109.ngrok-free.app"
+# BACKEND_URL = "https://400c-119-155-209-109.ngrok-free.app"
+BACKEND_URL = "http://127.0.0.1:8000"
 
 def main():
     st.title("To-Do App")
@@ -17,7 +18,7 @@ def main():
         username = st.text_input("Username")
         password = st.text_input("Password", type='password')
         if st.button("Login"):
-            response = requests.post(f"{BACKEND_URL}/token", data={"username": username, "password": password})
+            response = requests.post(f"{BACKEND_URL}/token", json={"username": username, "password": password})
             if response.status_code == 200:
                 st.success("Logged In as {}".format(username))
                 token = response.json().get("access_token")
