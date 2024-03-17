@@ -4,6 +4,27 @@ import requests
 # BACKEND_URL = "https://400c-119-155-209-109.ngrok-free.app"
 BACKEND_URL = "http://127.0.0.1:8000"
 
+def clear_token():
+    if 'auth_token' in st.session_state:
+        del st.session_state['auth_token']
+    st.experimental_set_query_params(auth_token=None)
+
+def check_for_token():
+    query_params = st.experimental_get_query_params()
+    if 'auth_token' in query_params:
+        return query_params['auth_token'][0]
+    return None
+
+def save_token(token):
+    st.session_state['auth_token'] = token
+    st.experimental_set_query_params(auth_token=token)
+
+def show_logout_button():
+    if st.sidebar.button('Logout'):
+        clear_token()
+        st.sidebar.success("You've been logged out.")
+        st.experimental_rerun()
+
 def show_home_page():
     st.title("To-Do App")
     st.info("Use the sidebar to navigate between Login and SignUp")
@@ -18,7 +39,7 @@ def show_login_page():
         if response.status_code == 200:
             st.sidebar.success("Logged In as {}".format(username))
             token = response.json().get("access_token")
-            st.session_state['auth_token'] = token  # Save the auth token in the session state
+            save_token(token)
             show_todo_page(token)
         else:
             st.sidebar.error("Incorrect Username/Password")
@@ -75,9 +96,16 @@ def display_todos(token, headers):
 
 
 def main():
+    # Check if the user is already authenticated by looking for a token
+    token = check_for_token()
+
     st.sidebar.title("Navigation")
-    app_mode = st.sidebar.selectbox("Choose the app mode",
-                                    ["Home", "Login", "SignUp"])
+    if token:
+        app_mode = st.sidebar.selectbox("Choose the app mode",
+                                        ["Home", "To-Do", "Logout"])
+    else:
+        app_mode = st.sidebar.selectbox("Choose the app mode",
+                                        ["Home", "Login", "SignUp"])
 
     if app_mode == "Home":
         show_home_page()
@@ -85,11 +113,16 @@ def main():
         show_login_page()
     elif app_mode == "SignUp":
         show_signup_page()
-    elif app_mode == "To-Do":
-        if 'auth_token' in st.session_state:
-            show_todo_page(st.session_state['auth_token'])
-        else:
-            st.warning("Please login to view this page.")
+    elif app_mode == "To-Do" and token:
+        show_todo_page(token)
+    elif app_mode == "Logout":
+        clear_token()
+        show_home_page()
+    else:
+        st.warning("Please login to view this page.")
+
+    if token:
+        show_logout_button()
 
 if __name__ == '__main__':
     st.set_page_config(page_title='To-Do App', layout='wide')
