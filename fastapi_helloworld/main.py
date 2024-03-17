@@ -11,7 +11,6 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# Dependency for getting DB session
 def get_db():
     db = SessionLocal()
     try:
