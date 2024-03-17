@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "fastapi-helloworld"
+version = "0.1.0"
+description = ""
+authors = ["ahmedmujtaba1 <ahmed.mujtaba11737@hhs.edu.pk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.110.0"
+uvicorn = {extras = ["standard"], version = "^0.28.0"}
+sqlmodel = "^0.0.16"
+python-jose = {version = "^3.3.0", extras = ["cryptography"]}
+psycopg = "^3.1.18"
+psycopg2 = "^2.9.9"
+passlib = "^1.7.4"
+python-multipart = "^0.0.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
