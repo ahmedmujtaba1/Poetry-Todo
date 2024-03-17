@@ -16,6 +16,7 @@ psycopg2 = "^2.9.9"
 passlib = "^1.7.4"
 python-multipart = "^0.0.9"
 bcrypt = "^4.1.2"
+ngrok = "^1.2.0"
 
 
 [build-system]
