@@ -18,6 +18,10 @@ def get_db():
     finally:
         db.close()
 
+@app.get('/')
+def root():
+    return {'message': 'Hello World'}
+
 @app.post("/users/", response_model=User)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(DBUser).filter(DBUser.username == user.username).first()
